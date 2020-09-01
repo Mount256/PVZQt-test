@@ -98,42 +98,33 @@ void MainGame::createZombie()
     QPointF zombiePos;
     QTime _time= QTime::currentTime();
     qsrand(_time.msec()+_time.second()*1000);
-    static int low = 4;
-    static int high = 8;
-    static int maxtime = 20 * 1000 / 33;
-    static int time = maxtime / 2;
+    static int duringTime = 200;
     static int counter = 0;
-    if (++counter >= time)
+     if (++counter >= 100)
+    {
+        if(counter % duringTime == 0)
         {
-            if (++low > high)
-            {
-                maxtime /= 1.3;
-                high *= 2;
-            }
-            counter = 0;
-            time = qrand() % (2 * maxtime / 3) + maxtime / 3;
-            int type = qrand() % 100;
-
             int posRand =  qrand() % 5 - 1;
             if(posRand == -1)
                 zombiePos = QPointF(800, 145-60);
             else
                 zombiePos = QPointF(800, 145+105*posRand);
-
+            int kind = qrand() % 100;
             Zombie *zombie;
-            if (type < 40)
+            if (kind < 50)
                 zombie = new CommonZombie(zombiePos);
-            else if (type < 70)
+            else if (kind < 60)
                 zombie = new ConeZombie(zombiePos);
-            else if (type < 80)
+            else if (kind < 70)
                 zombie = new PaperZombie(zombiePos);
-            else if (type < 90)
+            else if (kind < 90)
                 zombie = new ScreenZombie(zombiePos);
             else
                 zombie = new FootballZombie(zombiePos);
             zombie->setZValue(posRand + 1);
             scene->addItem(zombie);
         }
+    }
 }
 
 void MainGame::check()
